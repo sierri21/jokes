@@ -1,9 +1,12 @@
 <template>
   <div class="search">
-    <div class="search__wrapper">
-      <input type="text" class="search__input">
-      <button class="search__btn"></button>
-    </div>
+    <form class="search__wrapper" @click.prevent="emitSearch">
+      <input type="text"
+             :value="value"
+             @input="emitValue"
+             class="search__input">
+      <button class="search__btn" @click="emitSearch"></button>
+    </form>
   </div>
 </template>
 
@@ -13,6 +16,18 @@ import Vue from 'vue'
 export default Vue.extend({
   name: 'search-component',
   props: {
+    value: {
+      type: String,
+      default: ''
+    }
+  },
+  methods: {
+    emitValue (e):void {
+      this.$emit('input', e.target.value)
+    },
+    emitSearch ():void {
+      this.$emit('search')
+    }
   }
 })
 </script>
@@ -21,7 +36,7 @@ export default Vue.extend({
   .search {
     &__wrapper {
       width: 800px;
-      height: 30px;
+      height: 50px;
       margin: 2rem auto;
       border: 1px solid #000;
       position: relative;
@@ -35,16 +50,20 @@ export default Vue.extend({
       transform: translate(-5px ,-5px);
       width: 750px;
       border: none;
-      height: 34px;
+      height: 54px;
+      font-size: 1.5rem;
       padding-left: 15px;
+      &:focus {
+        outline: none;
+      }
     }
     &__btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
       right: 10px;
-      height: 20px;
-      width: 20px;
+      height: 40px;
+      width: 40px;
       border-radius: 50%;
       border: 1px solid #000;
       outline: none;
