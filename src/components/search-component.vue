@@ -68,6 +68,10 @@ export default Vue.extend({
       border: 1px solid #000;
       outline: none;
       cursor: pointer;
+      background-image: url('../../src/assets/search.svg');
+      background-size: cover;
+      background-color: inherit;
+      border: none;
     }
   }
 </style>
