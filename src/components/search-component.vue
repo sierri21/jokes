@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <form class="search__wrapper" @click.prevent="emitSearch">
+    <form class="search__wrapper" @click.prevent="">
       <input type="text"
              :value="value"
              @input="emitValue"
@@ -22,7 +22,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    emitValue (e):void {
+    emitValue (e: { target: { value: string } }) {
       this.$emit('input', e.target.value)
     },
     emitSearch ():void {
@@ -42,6 +42,7 @@ export default Vue.extend({
       position: relative;
       border-radius: 12px;
       overflow: hidden;
+      background-color: white;
     }
     &__input {
       position: absolute;

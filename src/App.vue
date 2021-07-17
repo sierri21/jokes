@@ -1,8 +1,11 @@
 <template>
   <div id="app" class="container">
-    <search-component
-      v-model="searchFilter"
-      @search="searchJokes" />
+    <header class="header">
+      <search-component
+        v-model="searchFilter"
+        @search="searchJokes"
+      />
+    </header>
     <div class="message" v-if="isFetching" >
       <img src="@/assets/loading.svg" alt="loading" class="loader">
     </div>
@@ -21,6 +24,24 @@
 import Vue from 'vue'
 import searchComponent from './components/search-component.vue'
 import jokeCard from '@/components/joke-card.vue'
+
+interface IJoke {
+  categoty: string,
+  type: string,
+  joke: string,
+  flags: {
+    nsfw: boolean,
+    religious: boolean,
+    political: boolean,
+    racist: boolean,
+    sexist: boolean,
+    explicit: boolean
+  },
+  id: number,
+  safe: boolean,
+  lang: string,
+  like: boolean
+}
 export default Vue.extend({
   name: 'App',
   components: {
@@ -29,16 +50,18 @@ export default Vue.extend({
   },
   data: function () {
     return {
-      jokes: {},
+      jokes: [],
       searchFilter: '',
       message: '',
-      isFetching: false
+      isFetching: false,
+      url: 'https://v2.jokeapi.dev/joke/Any?amount=10'
     }
   },
   methods: {
     async retrieveJokes () {
       this.isFetching = true
-      const res = await fetch(' https://v2.jokeapi.dev/joke/Any?amount=10')
+      this.jokes = []
+      const res = await fetch(this.url)
       let data = await res.json()
       if (!data.error) {
         data = this.getLikes(data.jokes)
@@ -49,12 +72,12 @@ export default Vue.extend({
     },
     async searchJokes () {
       this.isFetching = true
+      this.jokes = []
       if (!this.searchFilter) {
         this.retrieveJokes()
         return
       }
-      this.jokes = {}
-      const res = await fetch(`https://v2.jokeapi.dev/joke/Any?contains=${this.searchFilter}&amount=10`)
+      const res = await fetch(this.url + `&contains=${this.searchFilter}`)
       let data = await res.json()
       if (!data.error) {
         data = this.getLikes(data.jokes)
@@ -65,10 +88,9 @@ export default Vue.extend({
         this.message = data.message
       }
       this.isFetching = false
-      // console.log(this.jokes)
     },
-    getLikes (jokes) {
-      const ids = localStorage.ids.split(',').map(el => parseInt(el))
+    getLikes (jokes: IJoke[]) {
+      const ids = JSON.parse(localStorage.ids)
       return jokes.map(el => {
         el.like = ids.includes(el.id)
         return el
@@ -76,7 +98,9 @@ export default Vue.extend({
     }
   },
   mounted () {
-    console.log(123)
+    if (!localStorage.ids) {
+      localStorage.ids = JSON.stringify([])
+    }
     this.retrieveJokes()
   }
 })
@@ -88,7 +112,14 @@ export default Vue.extend({
     margin: 0 auto;
     height: 100%;
     display: grid;
-    grid-template-rows: 100px 1fr 80px;
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, .30);
+    border-radius: 20px;
+    grid-template-rows: 110px 1fr 80px;
+    overflow: hidden;
+  }
+  .header {
+    background-color: #faf1e6;
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, .30);
   }
   .loader {
     margin-top: 60px;
@@ -104,11 +135,12 @@ export default Vue.extend({
       transform: rotate(360deg);
     }
   }
-
   .message {
+    margin-top: 3rem;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.5rem;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   }
 </style>

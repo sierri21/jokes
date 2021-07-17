@@ -31,26 +31,25 @@ export default Vue.extend({
   },
   computed: {
     fill () {
-      return this.joke.like ? 'black' : 'white'
+      return this.joke.like ? '#064420' : '#e4efe7'
     },
     stroke () {
-      return !this.joke.like ? 'black' : 'white'
+      return !this.joke.like ? '#064420' : '#e4efe7'
     }
   },
   methods: {
     likeJoke () {
       if (!this.joke.like) {
-        if (!localStorage.ids) {
-          localStorage.ids = this.joke.id
-        } else {
-          localStorage.ids += ',' + this.joke.id
-        }
+        const ids = JSON.parse(localStorage.ids)
+        console.log(ids)
+        ids.push(this.joke.id)
+        localStorage.ids = JSON.stringify(ids)
         this.joke.like = true
       } else {
         this.joke.like = false
-        const ids = localStorage.ids.split(',')
+        const ids = JSON.parse(localStorage.ids)
         ids.splice(ids.findIndex(el => parseInt(el) === this.joke.id), 1)
-        localStorage.ids = ids.join('')
+        localStorage.ids = JSON.stringify(ids)
       }
     }
 
@@ -69,6 +68,7 @@ export default Vue.extend({
         padding: 10px;
         border-radius: 12px;
         align-items: center;
+        background-color: #fdfaf6;
         font-size: 1.5rem;
         font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
         &__like {
@@ -88,11 +88,10 @@ export default Vue.extend({
                     margin: 0;
                     padding: 0;
                 }
-                // background-image: url('');
             }
         }
         &.active {
-            background-color: rgba(159, 255, 64, 0.4);
+            background-color: #e4efe7;
         }
     }
 </style>
