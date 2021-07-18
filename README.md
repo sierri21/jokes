@@ -1,24 +1,6 @@
 # jokes
 
-## Project setup
-```
-npm install
-```
+Анекдоты выводятся по 10 штук, в рандомном порядке.  
+Если в строке поиска ввести пустую строку, выведутся рандомные 10 анекдотов
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+При лайке ID анекдота сохраняется в localStorage. Поэтому рекомендую почистить его после запуска SPA.   

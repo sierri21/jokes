@@ -63,6 +63,7 @@ export default Vue.extend({
       this.jokes = []
       const res = await fetch(this.url)
       let data = await res.json()
+      console.log(data)
       if (!data.error) {
         data = this.getLikes(data.jokes)
         this.jokes = data
@@ -99,7 +100,7 @@ export default Vue.extend({
   },
   mounted () {
     if (!localStorage.ids) {
-      localStorage.ids = JSON.stringify([])
+      localStorage.setItem('ids', JSON.stringify([]))
     }
     this.retrieveJokes()
   }
@@ -119,7 +120,7 @@ export default Vue.extend({
   }
   .header {
     background-color: #faf1e6;
-    box-shadow: 0 0 15px 0 rgba(0, 0, 0, .30);
+    // box-shadow: 0 0 15px 0 rgba(0, 0, 0, .30);
   }
   .loader {
     margin-top: 60px;

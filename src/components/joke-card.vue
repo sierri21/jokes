@@ -60,9 +60,9 @@ export default Vue.extend({
 <style scoped lang="scss">
     .card {
         max-width: 750px;
-        border: 1px solid gray;
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, .30);
         min-height: 20px;
-        margin: 1rem auto;
+        margin: 1.5rem auto;
         display: grid;
         grid-template-columns: 1fr 50px;
         padding: 10px;
