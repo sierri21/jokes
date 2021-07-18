@@ -41,7 +41,6 @@ export default Vue.extend({
     likeJoke () {
       if (!this.joke.like) {
         const ids = JSON.parse(localStorage.ids)
-        console.log(ids)
         ids.push(this.joke.id)
         localStorage.ids = JSON.stringify(ids)
         this.joke.like = true

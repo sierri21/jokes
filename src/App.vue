@@ -63,7 +63,6 @@ export default Vue.extend({
       this.jokes = []
       const res = await fetch(this.url)
       let data = await res.json()
-      console.log(data)
       if (!data.error) {
         data = this.getLikes(data.jokes)
         this.jokes = data
